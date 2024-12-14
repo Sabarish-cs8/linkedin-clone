@@ -1,9 +1,11 @@
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Briefcase, HomeIcon, MessageSquare, SearchIcon, UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "./ui/button";
 function Header() {
   return (
-    <div className="flex">
+    <div className="flex items-center p-2 max-w-6xl mx-auto ">
         <Image 
            className="rounded-lg"
            src="https://links.papareact.com/b3z"
@@ -45,8 +47,16 @@ function Header() {
             </Link>
 
             {/**User Button if signed in*/}
+            <SignedIn>
+                <UserButton />
+            </SignedIn>
 
             {/**Sign In Button if not signed in */}
+            <SignedOut>
+                <Button asChild variant="secondary">
+                    <SignInButton />
+                </Button>
+            </SignedOut>
            </div>
     </div>
   )
