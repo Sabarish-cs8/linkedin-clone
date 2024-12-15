@@ -14,28 +14,29 @@ import { NextResponse } from "next/server";
         if(!post){
             return NextResponse.json({error:"Post not found"},{status:404});
         }
-        return NextResponse.json(post);
+
+        const likes = post.likes;
+        return NextResponse.json(likes);
      } catch (error) {
         return NextResponse.json(
-            {error:"An error occurred while fetching the post"},
+            {error:"An error occurred while fetching likes"},
             {status:500}
-        )
+        );
      }    
   }
 
-  export interface DeletePostRequestBody{
+  export interface LikePostRequestBody{
     userId:string;
   }
 
-  export async function DELETE(
+  export async function POST(
     request:Request,
     {params}:{params:{post_id:string}}
   ){
     auth().protect();
-
     await connectDB();
 
-    const {userId } : DeletePostRequestBody = await request.json();
+    const {userId } : LikePostRequestBody = await request.json();
 
     try {
         const post = await Post.findById(params.post_id);
@@ -44,17 +45,13 @@ import { NextResponse } from "next/server";
             return NextResponse.json({error:"Post not found"},{status:404});
         }
 
-        if(post.user.userId !== userId){
-            throw new Error("Post does not belong to the user")
-        }
+        await post.likePost(userId);
 
-        await post.removePost();
-
-        return NextResponse.json({message:"Post deleted successfully"})
+        return NextResponse.json({message:"Post liked successfully"})
         
     } catch (error) {
         return NextResponse.json(
-            {error:"An error occurred while deleting the post"},
+            {error:"An error occurred while liking the post"},
             {status:500}
         )
     }
