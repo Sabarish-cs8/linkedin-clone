@@ -118,4 +118,4 @@ PostSchema.statics.getAllPosts = async function (){
     }
 };
 
-//export const Post = models.Post as IPostModel || mongoose.model<IPostDocument , IPostModel>("Post" , PostSchema);
+export const Post = models.Post as IPostModel || mongoose.model<IPostDocument , IPostModel>("Post" , PostSchema);

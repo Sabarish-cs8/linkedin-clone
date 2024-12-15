@@ -1,5 +1,6 @@
-import { Connection } from './../node_modules/mongodb/src/cmap/connection';
+
 import mongoose from 'mongoose';
+
 const connectionString=`S{process.env.MOGO_DB_USERNAME}`
 
 if(!connectionString){
@@ -7,7 +8,7 @@ if(!connectionString){
 }
 
 const connectDB = async () => {
-    if(mongoose.Connection?.readyState >=1){
+    if(mongoose.connection?.readyState >=1){
         console.log("--- Already connected to MongoDB ----");
         return;
     }
@@ -20,3 +21,5 @@ const connectDB = async () => {
         
     }
 }
+
+export default connectDB
