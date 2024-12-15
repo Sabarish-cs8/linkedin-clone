@@ -1,5 +1,6 @@
 "use server"
 
+import { IUser } from "@/types/user";
 import { currentUser } from "@clerk/nextjs/server"
 
 export default async function createPostAction(formData:FormData){
@@ -10,7 +11,7 @@ export default async function createPostAction(formData:FormData){
     }
 
     const postInput = formData.get("postInput") as string;
-    const image = formData.get("image") as StaticFileChunkingStrategy;
+    const image = formData.get("image") as File;
     let imageUrl:string|undefined;
 
     if(!postInput){
@@ -18,10 +19,31 @@ export default async function createPostAction(formData:FormData){
     }
 
     //define user
+    const userDB:IUser = {
+        userId:user.id,
+        userImage:user.imageUrl,
+        firstName:user.firstName || "",
+        lastName:user.lastName || "",
+    };
 
-    //upload image if there is one
-
-    //create post in database
-
+    try {
+        if (image.size > 0) {
+            
+            // 1.upload image if there is one - MS blob storage
+            // 2. create post in database with image
+            
+        } else {
+            // 2.create post in database without image
+            
+            const body = {
+                user:userDB,
+                text:postInput,
+            };
+            await Post.create(body)
+        }
+        
+    } catch (error :any) {
+     throw new Error("Failed to create post",error)   
+    }
     // revalidatePath '/' - home page
 }
