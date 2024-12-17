@@ -10,6 +10,13 @@ async function UserInformation({posts}:{posts:IPostDocument[]}) {
     const firstName =user?.firstName
     const lastName=user?.lastName
     const imageUrl=user?.imageUrl
+
+    const userPosts = posts?.filter((post)=>post.user.userId === user?.id);
+    const userComments = posts.flatMap(
+        (post)=>
+            post?.comments?.filter((comment)=>comment.user.userId === user?.id) || 
+        []
+    );
   return (
     <div className="flex flex-col justify-center items-center bg-white mr-6 rounded-lg border py-4">
         <Avatar>
@@ -47,17 +54,19 @@ async function UserInformation({posts}:{posts:IPostDocument[]}) {
                 </Button>
             </div>
         </SignedOut>
+        <SignedIn>
         <hr className="w-full border-gray-200 my-5" />
 
         <div className="flex justify-between w-full px-4 text-sm" >
             <p className="font-semibold text-gray-400">Posts</p>
-            <p className="text-blue-400">0</p>
+            <p className="text-blue-400">{userPosts.length}</p>
         </div>
 
         <div className="flex justify-between w-full px-4 text-sm" >
             <p className="font-semibold text-gray-400">Comments</p>
-            <p className="text-blue-400">0</p>
+            <p className="text-blue-400">{userComments.length}</p>
         </div>
+        </SignedIn>
 
     </div>
   )

@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { ImageIcon, XIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import createPostAction from "@/actions/createPostAction";
+import { toast } from "sonner";
 
 function PostForm() {
     const ref = useRef<HTMLFormElement>(null);
@@ -40,13 +41,17 @@ function PostForm() {
     }
   return (
     <div className="mb-2">
-        <form ref={ref} action={
+        <form ref={ref} action={(formData) => {
             //Handle form submission with server action
-            handlePostAction(FormData)
+           const promise = handlePostAction(formData);
 
             //Toast notification based on the promise above
-
-        } className="p-3 bg-white rounded-lg border">
+            toast.promise(promise,{
+                loading:"Creating post...",
+                success:"Post created",
+                error:"Failed to create post",
+            });
+        }} className="p-3 bg-white rounded-lg border">
             <div className="flex items-center space-x-2">
                 <Avatar>
                     <AvatarImage src={user?.imageUrl} />
