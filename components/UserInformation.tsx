@@ -2,9 +2,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server"
 import { Button } from "./ui/button";
+import { IPostDocument } from "@/mongodb/models/post";
 
 
-async function UserInformation() {
+async function UserInformation({posts}:{posts:IPostDocument[]}) {
     const user = await currentUser();
     const firstName =user?.firstName
     const lastName=user?.lastName

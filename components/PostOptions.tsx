@@ -1,7 +1,7 @@
 "use client"
 
 import { IPostDocument } from "@/mongodb/models/post"
-import { useUser } from "@clerk/nextjs";
+import { SignedIn, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react"
 import { Button } from "./ui/button";
 import { MessageCircle, Repeat2, Send, ThumbsUpIcon } from "lucide-react";
@@ -127,8 +127,10 @@ function PostOptions({post }:{post:IPostDocument}) {
 
         {isCommentsOpen && (
             <div className="p-4">
-                {user?.id && <CommentForm postId={postId}/>
-                <CommentFeed post={post} />}
+                <SignedIn>
+                 <CommentForm postId={post._id}/>
+                 </SignedIn>
+                <CommentFeed post={post} />
             </div>
         )}
     </div>
