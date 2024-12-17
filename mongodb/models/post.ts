@@ -1,4 +1,3 @@
-import { Post } from './post';
 import { IUser } from "@/types/user";
 import mongoose,{Schema ,Document,models,Model} from "mongoose";
 import {Comment,IComment, ICommentBase } from "./comment";
